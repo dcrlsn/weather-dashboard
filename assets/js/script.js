@@ -21,7 +21,6 @@ function getLocationData() {
       else resultsContainer.textContent = `Error: ${response.statusText}`;
     })
     .then(function (data) {
-      console.log(data)
       searchLocation = data.name;
       getWeatherData(data.coord.lon, data.coord.lat);
     })
@@ -49,14 +48,10 @@ function getWeatherData(lon, lat) {
 }
 
 function colorBorder(element, temp) {
-  switch (temp) {
-    case Math.floor(temp) < 30: color = `border-primary`;
-      break;
-    case Math.floor(temp) > 90: color = `border-danger`;
-      break;
-    default: color = `border-success`;
-      break;
-  }
+  var color = '';
+  if (temp < 30) color = `border-primary`;
+  else if (temp > 90) color = `border-danger`;
+  else color = `border-success`;
   element.classList.add(`${color}`);
 }
 
@@ -67,7 +62,7 @@ function displayCurrentForecast(data) {
   searchFormElement.classList = 'col-12 text-center';
 
   var currentDiv = document.createElement('div');
-  currentDiv.classList = 'order-0 row text-center pt-5 pb-5 justify-content-evenly border m-5 bg-dark col-8 rounded';
+  currentDiv.classList = 'order-0 row text-center pt-5 pb-5 justify-content-evenly border-width m-5 bg-dark col-8 rounded';
   colorBorder(currentDiv, data.current.temp);
   resultsContainer.appendChild(currentDiv);
 
@@ -107,7 +102,7 @@ function displayCurrentForecast(data) {
   for (i = 0; i < 5; i++) {
     var day = data.daily[i];
     var dayOfWeek = document.createElement('div');
-    dayOfWeek.classList = 'col-2 bg-dark m-2 pt-3 border rounded'
+    dayOfWeek.classList = 'col-2 bg-dark m-2 pt-3 border-width rounded'
     colorBorder(dayOfWeek, data.daily[i].temp.day);
 
     var dayOfWeekTitle = document.createElement('h4');
