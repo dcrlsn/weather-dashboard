@@ -14,16 +14,20 @@
   <title>Weather Dashboard</title>
 </head>
 
-<body class="bg-dark">
-  <main class="row bg-dark text-light">
-    <header class="col-12">
-      <form>
-        <input type="text" id="city-input">
-        <button type="submit">Click Me</button>
+<body class="bg-secondary">
+  <main
+    class="container col-12 row d-flex bg-secondary text-light justify-content-center min-vh-100 align-content-center m-auto">
+    <header class="row col-12 d-flex justify-content-center">
+      <form id="search" class="text-center col-7 mb-5 text-center">
+        <h1>Please enter your City</h1>
+        <input class="form-control mt-2" type="text" id="city-input">
+        <button class="btn btn-primary mt-2" type="submit">Submit</button>
       </form>
-    </header>
-    <section id="results" class="col-12">
+      <div id="prev-search" class="text-center mt-2 d-grid gap-1">
 
+      </div>
+    </header>
+    <section id="results" class="col-9 text-center">
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
