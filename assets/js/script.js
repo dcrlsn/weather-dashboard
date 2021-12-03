@@ -152,7 +152,7 @@ function displayCurrentForecast(data) {
 };
 
 function init() {
-  var prevSearch = JSON.parse(localStorage.getItem("prevSearch"));
+  var prevSearch = JSON.parse(localStorage.getItem("prevSearch")) || [];
   renderPrevSearch(prevSearch);
 
 }
@@ -170,15 +170,20 @@ function renderPrevSearch(prevSearch) {
     prevSearchElement.appendChild(prevSearchBtn);
   }
 }
+
 function store(str) {
   var prevSearch = JSON.parse(localStorage.getItem("prevSearch")) || [];
   if (!prevSearch.includes(str) && !null) {
     prevSearch.unshift(str);
-    prevSearch.length = 5;
+    if (prevSearch.length > 5) {
+      prevSearch.length = 5;
+    }
   }
   localStorage.setItem('prevSearch', JSON.stringify(prevSearch))
 }
+
 init();
+
 if (searchTerm) {
   getLocationData()
 };
