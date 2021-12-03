@@ -28,7 +28,6 @@ function getLocationData() {
     .catch(function (error) {
       alert("Unable to connect to OpenWeatherMap");
     });
-  ;
 };
 
 function getWeatherData(lon, lat) {
