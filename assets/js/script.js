@@ -61,7 +61,6 @@ function colorBorder(element, temp) {
 }
 
 function displayCurrentForecast(data) {
-  console.log(data)
   resultsContainer.classList = "row justify-content-center col-9";
   var searchFormHeader = document.querySelector('header');
   searchFormHeader.classList = 'col-3 justify-content-left p-2';
