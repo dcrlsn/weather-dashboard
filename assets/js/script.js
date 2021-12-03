@@ -1,48 +1,29 @@
-// enter city
-
-
-//  I am presented with the city name, the date, an icon representation of 
-//            weather conditions, 
-//            the temperature, 
-//             the humidity, 
-//              the wind speed, 
-
-// get uv index
-
-
-// get 5 day forecast
-//color something based on weather severity
-
-// save search to local storage, click to recall api.
-var searchInput = document.querySelector('#city-input')
-var searchFormElement = document.querySelector('#search')
-var prevSearchElement = document.querySelector('#prev-search')
-var prevSearchElementBtn = document.querySelectorAll('#prev-search button')
-var resultsContainer = document.querySelector('#results')
+var searchInput = document.querySelector('#city-input');
+var searchFormElement = document.querySelector('#search');
+var prevSearchElement = document.querySelector('#prev-search');
+var prevSearchElementBtn = document.querySelectorAll('#prev-search button');
+var resultsContainer = document.querySelector('#results');
 var params = new URLSearchParams(document.location.search);
 var searchTerm = params.get('q');
 var token = '5e12ee56c52dd79263a134af142e0ceb';
 var searchLocation = '';
-
 var imgIcon = '';
 
-//https://api.openweathermap.org/data/2.5/weather?q=charlotte&appid=5e12ee56c52dd79263a134af142e0ceb
-
 function getLocationData() {
-  var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${token}&units=imperial`
+  var apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${token}&units=imperial`;
 
   fetch(apiUrl)
     .then(function (response) {
       if (response.ok) {
-        store(searchTerm)
-        return response.json()
+        store(searchTerm);
+        return response.json();
       }
       else resultsContainer.textContent = `Error: ${response.statusText}`;
     })
     .then(function (data) {
       console.log(data)
-      searchLocation = data.name
-      getWeatherData(data.coord.lon, data.coord.lat)
+      searchLocation = data.name;
+      getWeatherData(data.coord.lon, data.coord.lat);
     })
     .catch(function (error) {
       alert("Unable to connect to OpenWeatherMap");
@@ -70,34 +51,34 @@ function getWeatherData(lon, lat) {
 
 function colorBorder(element, temp) {
   switch (temp) {
-    case Math.floor(temp) < 30: color = `border-primary`
+    case Math.floor(temp) < 30: color = `border-primary`;
       break;
-    case Math.floor(temp) > 90: color = `border-danger`
+    case Math.floor(temp) > 90: color = `border-danger`;
       break;
-    default: color = `border-success`
+    default: color = `border-success`;
       break;
   }
-  element.classList.add(`${color}`)
+  element.classList.add(`${color}`);
 }
 
 function displayCurrentForecast(data) {
   console.log(data)
-  resultsContainer.classList = "row justify-content-center col-9"
-  var searchFormHeader = document.querySelector('header')
-  searchFormHeader.classList = 'col-3 justify-content-left p-2'
-  searchFormElement.classList = 'col-12 text-center'
+  resultsContainer.classList = "row justify-content-center col-9";
+  var searchFormHeader = document.querySelector('header');
+  searchFormHeader.classList = 'col-3 justify-content-left p-2';
+  searchFormElement.classList = 'col-12 text-center';
 
   var currentDiv = document.createElement('div');
-  currentDiv.classList = 'order-0 row text-center pt-5 pb-5 justify-content-evenly border m-5 bg-dark col-8 rounded'
-  colorBorder(currentDiv, data.current.temp)
-  resultsContainer.appendChild(currentDiv)
+  currentDiv.classList = 'order-0 row text-center pt-5 pb-5 justify-content-evenly border m-5 bg-dark col-8 rounded';
+  colorBorder(currentDiv, data.current.temp);
+  resultsContainer.appendChild(currentDiv);
 
   var resultsDiv = document.createElement('div');
-  resultsDiv.classList = "col-4 order-0 text-center pt-5 pb-5"
+  resultsDiv.classList = "col-4 order-0 text-center pt-5 pb-5";
   currentDiv.appendChild(resultsDiv);
 
   var iconDiv = document.createElement('div');
-  iconDiv.classList = 'col-4 d-flex order-1 text-center align-content-center justify-content-center pt-5 pb-5'
+  iconDiv.classList = 'col-4 d-flex order-1 text-center align-content-center justify-content-center pt-5 pb-5';
   currentDiv.appendChild(iconDiv);
 
   var titleElement = document.createElement('h1');
@@ -105,7 +86,7 @@ function displayCurrentForecast(data) {
   resultsDiv.appendChild(titleElement);
 
   var weatherIcon = document.createElement('img');
-  weatherIcon.src = `http://openweathermap.org/img/w/${data.current.weather[0].icon}.png`
+  weatherIcon.src = `http://openweathermap.org/img/w/${data.current.weather[0].icon}.png`;
   iconDiv.appendChild(weatherIcon);
 
   var tempElement = document.createElement('h2');
@@ -126,28 +107,28 @@ function displayCurrentForecast(data) {
 
 
   for (i = 0; i < 5; i++) {
-    var day = data.daily[i]
+    var day = data.daily[i];
     var dayOfWeek = document.createElement('div');
     dayOfWeek.classList = 'col-2 bg-dark m-2 pt-3 border rounded'
-    colorBorder(dayOfWeek, data.daily[i].temp.day)
+    colorBorder(dayOfWeek, data.daily[i].temp.day);
 
     var dayOfWeekTitle = document.createElement('h4');
-    dayOfWeekTitle.textContent = moment(day.dt, 'X').format('dddd')
+    dayOfWeekTitle.textContent = moment(day.dt, 'X').format('dddd');
 
-    var dayIcon = document.createElement('img')
-    dayIcon.src = `http://openweathermap.org/img/w/${day.weather[0].icon}.png`
-    dayIcon.alt = `${day.weather[0].main}`
+    var dayIcon = document.createElement('img');
+    dayIcon.src = `http://openweathermap.org/img/w/${day.weather[0].icon}.png`;
+    dayIcon.alt = `${day.weather[0].main}`;
 
     var dayOfWeekHumidity = document.createElement('p');
     dayOfWeekHumidity.textContent = `${day.humidity}% Humidity`
     var dayOfWeekTemperature = document.createElement('h5');
-    dayOfWeekTemperature.textContent = `${Math.floor(day.temp.day)} F`
+    dayOfWeekTemperature.textContent = `${Math.floor(day.temp.day)} F`;
 
-    dayOfWeek.appendChild(dayOfWeekTitle)
-    dayOfWeek.appendChild(dayIcon)
-    dayOfWeek.appendChild(dayOfWeekTemperature)
-    dayOfWeek.appendChild(dayOfWeekHumidity)
-    dailyForecast.appendChild(dayOfWeek)
+    dayOfWeek.appendChild(dayOfWeekTitle);
+    dayOfWeek.appendChild(dayIcon);
+    dayOfWeek.appendChild(dayOfWeekTemperature);
+    dayOfWeek.appendChild(dayOfWeekHumidity);
+    dailyForecast.appendChild(dayOfWeek);
   }
 };
 
@@ -179,13 +160,13 @@ function store(str) {
       prevSearch.length = 5;
     }
   }
-  localStorage.setItem('prevSearch', JSON.stringify(prevSearch))
+  localStorage.setItem('prevSearch', JSON.stringify(prevSearch));
 }
 
 init();
 
 if (searchTerm) {
-  getLocationData()
+  getLocationData();
 };
 
 searchFormElement.addEventListener('submit',
